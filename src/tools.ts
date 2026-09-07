@@ -1,5 +1,5 @@
 import { tool } from "ai";
-import { file, z } from "zod";
+import { z } from "zod";
 import { Diagram, FillStyle, TextAlign, VerticalAlign } from "./schema";
 
 export const tools = {
