@@ -36,17 +36,36 @@ ws.addEventListener("open", () => {
 
 ws.addEventListener("message", (event) => {
   const data = event.data;
+  let parsed;
   try {
-    const parsed = JSON.parse(data);
-    if (parsed.type == "cf_agent_use_chat_request" && parsed.id == requestId) {
-      process.stdout.write(parsed.body);
-      if (parsed.done) {
-        console.log("\n");
-        ws.close(0);
-      }
-    }
+    parsed = JSON.parse(data);
   } catch {
     process.stdout.write(data);
+    return;
+  }
+
+  if (parsed.type !== "cf_agent_use_chat_response" || parsed.id !== requestId) {
+    return;
+  }
+
+  if (parsed.done) {
+    console.log("\n");
+    ws.close();
+    return;
+  }
+
+  if (parsed.error) {
+    console.error("\nServer error:", parsed.body);
+    ws.close();
+    return;
+  }
+
+  try {
+    const part = JSON.parse(parsed.body);
+    if (part.type === "text-delta") process.stdout.write(part.delta ?? part.text ?? "");
+    else console.log(`\n[${part.type}]`, JSON.stringify(part, null, 2));
+  } catch {
+    process.stdout.write(parsed.body);
   }
 });
 
