@@ -8,9 +8,8 @@ import {
 } from "ai";
 import { createOpenRouter } from "@openrouter/ai-sdk-provider";
 import { tools } from "./tools";
-import { AgentContext } from "agents";
 
-interface Env {
+interface Env extends Cloudflare.Env {
   OPENROUTER_API_KEY: string;
 }
 
@@ -31,13 +30,6 @@ Guidelines for generating diagrams:
 When the user asks to modify an element, use the modifyDiagram tool with the element's id.`;
 
 export class DesignAgent extends AIChatAgent<Env> {
-  private readonly env: Env;
-
-  constructor(ctx: AgentContext, env: Env) {
-    super(ctx, env);
-    this.env = env;
-  }
-
   async onChatMessage(): Promise<Response | undefined> {
     const openrouter = createOpenRouter({
       apiKey: this.env.OPENROUTER_API_KEY,
