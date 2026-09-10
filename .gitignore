@@ -5,6 +5,7 @@ dist
 *.log
 openspec
 .claude
-lessons/
+docs/
 
 CLAUDE.md
+evals/results
