@@ -86,7 +86,7 @@ async function main() {
   const datasetPath = join(ROOT, "evals/datasets/golden.json");
   const testCases: TestCase[] = JSON.parse(readFileSync(datasetPath, "utf-8"));
 
-  console.log(`Running ${testCases.length} testcases...`);
+  console.log(`Running ${testCases.length} testcases...\n`);
 
   const results: EvalResult[] = [];
   for (const testCase of testCases) {
@@ -95,10 +95,10 @@ async function main() {
     results.push(testCaseResult);
 
     if (testCaseResult.error) {
-      console.log(`[ERROR]: ${testCaseResult.error}`);
+      console.log(`[ERROR]: ${testCaseResult.error}\n`);
     } else {
       console.log(
-        `[SUCCESS]: ${testCaseResult.elements.length} elements, ${testCaseResult.durationMs}ms`,
+        `[SUCCESS]: ${testCaseResult.elements.length} elements, ${testCaseResult.durationMs}ms\n`,
       );
     }
   }
@@ -114,17 +114,17 @@ async function main() {
     results.reduce((acc, curr) => curr.durationMs + acc, 0) / results.length,
   );
 
-  console.log(`Results written to ${testFile}`);
-  console.log(`\nNext: open the file, review each result, and add score (1-5) and notes.`);
+  console.log(`Results written to ${testFile}\n`);
+  console.log(`Next: open the file, review each result, and add score (1-5) and notes.\n`);
 
-  console.log("\nSummary\n");
-  console.log(`Total: ${results.length}`);
-  console.log(`Errors: ${results.filter((r) => r.error).length}`);
+  console.log("\n----Summary----\n");
+  console.log(`Total: ${results.length}\n`);
+  console.log(`Errors: ${results.filter((r) => r.error).length}\n`);
   console.log(
-    `Empty results (no elements): ${results.filter((r) => !r.error && r.elements.length === 0).length}`,
+    `Empty results (no elements): ${results.filter((r) => !r.error && r.elements.length === 0).length}\n`,
   );
 
-  console.log(`Avg duration: ${avgDuration}`);
+  console.log(`Avg duration: ${avgDuration}\n`);
 }
 
 main().catch((err) => {
