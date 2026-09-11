@@ -6,6 +6,7 @@ import { fileURLToPath } from "url";
 import { SYSTEM_PROMPT } from "../src/prompts";
 import { EvalResult, TestCase } from "./types";
 import { tools } from "../src/tools";
+import { getModel } from "../src/model";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(__dirname, "..");
@@ -36,8 +37,9 @@ if (!env || !apiKey) {
   process.exit(1);
 }
 
-const openrouter = createOpenRouter({ apiKey });
-const model = openrouter("deepseek/deepseek-v4-flash");
+const model = getModel({
+  apiKey,
+});
 
 async function runTestCase(testCase: TestCase): Promise<EvalResult> {
   const start = Date.now();
