@@ -1,4 +1,5 @@
 allowBuilds:
+  braintrust: true
   core-js-pure: true
   esbuild: true
   workerd: true
